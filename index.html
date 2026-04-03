@@ -1195,7 +1195,7 @@
                                 <div
                                     v-for="(line, idx) in lyrics"
                                     :key="idx"
-                                    :ref="el => { if (el) lyricRefs[idx] = el }"
+                                    :ref="el => setLyricRef(el, idx)"
                                     class="lyric-line"
                                     :class="{ active: idx === currentLyricIndex }"
                                 >
@@ -1403,6 +1403,15 @@
                     const isScrolling = ref(false);
                     const scrollTimer = ref(null);
                     const isUserScrolling = ref(false);
+                    const lastLyricIndex = ref(-1);
+                    const isAutoScrolling = ref(false); // 标记是否是自动滚动
+
+                    // 设置歌词行的 ref
+                    const setLyricRef = (el, idx) => {
+                        if (el) {
+                            lyricRefs.value[idx] = el;
+                        }
+                    };
 
                     const defaultCover =
                         "https://y.gtimg.cn/music/photo_new/T002R300x300M000000MkMni19ClKG.jpg";
@@ -1540,6 +1549,11 @@
                         if (!lyricsPanel.value || lyrics.value.length === 0)
                             return;
 
+                        // 如果是自动滚动，忽略
+                        if (isAutoScrolling.value) {
+                            return;
+                        }
+
                         // 标记用户正在滚动
                         isUserScrolling.value = true;
                         isScrolling.value = true;
@@ -1652,13 +1666,26 @@
                             }
                         }
 
-                        return parsed.sort((a, b) => a.time - b.time);
+                        const sorted = parsed.sort((a, b) => a.time - b.time);
+                        console.log(
+                            "解析歌词行数:",
+                            sorted.length,
+                            "是否有重复时间:",
+                            sorted.some(
+                                (line, idx) =>
+                                    idx > 0 &&
+                                    line.time === sorted[idx - 1].time,
+                            ),
+                        );
+                        return sorted;
                     };
 
                     const fetchLyrics = async (songMid, songName) => {
                         lyricsLoading.value = true;
                         lyrics.value = [];
                         currentLyricIndex.value = -1;
+                        lastLyricIndex.value = -1; // 重置上一次的索引
+                        lyricRefs.value = []; // 清空 refs 数组
 
                         console.log(
                             "开始获取歌词，songMid:",
@@ -1710,7 +1737,8 @@
                                             console.log(
                                                 "歌词解析成功，共",
                                                 lyrics.value.length,
-                                                "行",
+                                                "行，前5行:",
+                                                lyrics.value.slice(0, 5),
                                             );
                                             lyricsLoading.value = false;
                                             showLyrics.value = true; // 自动显示歌词
@@ -1772,29 +1800,39 @@
                             }
                         }
 
-                        currentLyricIndex.value = newIndex;
+                        // 只在歌词索引改变时更新和滚动
+                        if (newIndex !== lastLyricIndex.value) {
+                            console.log(
+                                "歌词索引变化:",
+                                lastLyricIndex.value,
+                                "->",
+                                newIndex,
+                                "当前时间:",
+                                time.toFixed(2),
+                                "歌词:",
+                                lyrics.value[newIndex]?.text,
+                            );
+                            currentLyricIndex.value = newIndex;
+                            lastLyricIndex.value = newIndex;
 
-                        // 只有在非用户滚动时才自动滚动
-                        if (newIndex >= 0 && !isUserScrolling.value) {
-                            const activeLine = lyricRefs.value[newIndex];
-                            if (
-                                lyricsPanel.value &&
-                                activeLine &&
-                                showLyrics.value
-                            ) {
-                                const panelRect =
-                                    lyricsPanel.value.getBoundingClientRect();
-                                const lineRect =
-                                    activeLine.getBoundingClientRect();
-
+                            // 自动滚动，让当前歌词始终显示在中间
+                            if (newIndex >= 0 && !isUserScrolling.value) {
+                                const activeLine = lyricRefs.value[newIndex];
                                 if (
-                                    lineRect.top < panelRect.top ||
-                                    lineRect.bottom > panelRect.bottom
+                                    lyricsPanel.value &&
+                                    activeLine &&
+                                    showLyrics.value
                                 ) {
+                                    // 设置自动滚动标记
+                                    isAutoScrolling.value = true;
                                     activeLine.scrollIntoView({
                                         behavior: "smooth",
                                         block: "center",
                                     });
+                                    // 滚动完成后重置标记
+                                    setTimeout(() => {
+                                        isAutoScrolling.value = false;
+                                    }, 600); // 稍微长于 smooth 滚动时间
                                 }
                             }
                         }
@@ -1850,6 +1888,7 @@
                         onPlayError,
                         updateLyricsTime,
                         onLyricsScroll,
+                        setLyricRef,
                     };
                 },
             }).mount("#app");
