@@ -21,76 +21,203 @@
                     system-ui,
                     -apple-system,
                     sans-serif;
+                box-sizing: border-box;
             }
 
+            /* ── Base ── */
             body {
-                background: linear-gradient(
-                    135deg,
-                    #0f0c29 0%,
-                    #302b63 50%,
-                    #24243e 100%
-                );
+                background: #0e0804;
                 min-height: 100vh;
                 position: relative;
+                overflow-x: hidden;
             }
 
-            body::before {
-                content: "";
+            /* ── Animated background canvas ── */
+            .bg-scene {
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background:
-                    radial-gradient(
-                        circle at 20% 50%,
-                        rgba(168, 85, 247, 0.15) 0%,
-                        transparent 50%
-                    ),
-                    radial-gradient(
-                        circle at 80% 80%,
-                        rgba(236, 72, 153, 0.1) 0%,
-                        transparent 60%
-                    );
-                pointer-events: none;
+                inset: 0;
                 z-index: 0;
+                pointer-events: none;
+                overflow: hidden;
             }
 
+            .bg-orb {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(80px);
+                opacity: 0.5;
+            }
+
+            /* Amber glow – top left */
+            .bg-orb-1 {
+                width: 700px;
+                height: 700px;
+                background: radial-gradient(
+                    circle,
+                    #b45309 0%,
+                    transparent 70%
+                );
+                top: -220px;
+                left: -180px;
+                animation: orbDrift1 18s ease-in-out infinite;
+            }
+
+            /* Deep rose – bottom right */
+            .bg-orb-2 {
+                width: 520px;
+                height: 520px;
+                background: radial-gradient(
+                    circle,
+                    #9f1239 0%,
+                    transparent 70%
+                );
+                bottom: -160px;
+                right: -130px;
+                animation: orbDrift2 22s ease-in-out infinite;
+            }
+
+            /* Orange – mid right */
+            .bg-orb-3 {
+                width: 420px;
+                height: 420px;
+                background: radial-gradient(
+                    circle,
+                    #c2410c 0%,
+                    transparent 70%
+                );
+                top: 42%;
+                right: 14%;
+                animation: orbDrift3 15s ease-in-out infinite;
+                opacity: 0.28;
+            }
+
+            /* Deep warm gold – bottom left */
+            .bg-orb-4 {
+                width: 320px;
+                height: 320px;
+                background: radial-gradient(
+                    circle,
+                    #78350f 0%,
+                    transparent 70%
+                );
+                bottom: 18%;
+                left: 8%;
+                animation: orbDrift4 20s ease-in-out infinite;
+                opacity: 0.3;
+            }
+
+            .bg-grid {
+                position: absolute;
+                inset: 0;
+                background-image:
+                    linear-gradient(
+                        rgba(255, 200, 100, 0.015) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(255, 200, 100, 0.015) 1px,
+                        transparent 1px
+                    );
+                background-size: 50px 50px;
+            }
+
+            @keyframes orbDrift1 {
+                0%,
+                100% {
+                    transform: translate(0, 0) scale(1);
+                }
+                33% {
+                    transform: translate(60px, 80px) scale(1.08);
+                }
+                66% {
+                    transform: translate(-30px, 40px) scale(0.94);
+                }
+            }
+            @keyframes orbDrift2 {
+                0%,
+                100% {
+                    transform: translate(0, 0) scale(1);
+                }
+                33% {
+                    transform: translate(-70px, -50px) scale(1.12);
+                }
+                66% {
+                    transform: translate(40px, -70px) scale(0.9);
+                }
+            }
+            @keyframes orbDrift3 {
+                0%,
+                100% {
+                    transform: translate(0, 0) scale(1);
+                }
+                50% {
+                    transform: translate(-50px, 70px) scale(1.1);
+                }
+            }
+            @keyframes orbDrift4 {
+                0%,
+                100% {
+                    transform: translate(0, 0) scale(1);
+                }
+                50% {
+                    transform: translate(60px, -40px) scale(1.05);
+                }
+            }
+
+            /* ── Marquee banner ── */
             .marquee-container {
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(12px);
-                padding: 10px 0;
-                z-index: 100;
+                background: rgba(14, 8, 2, 0.82);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                padding: 7px 0;
+                z-index: 200;
                 overflow: hidden;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                border-bottom: 1px solid rgba(217, 119, 6, 0.2);
+                box-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
             }
+
             .marquee {
                 white-space: nowrap;
                 display: inline-block;
-                animation: marquee 22s linear infinite;
+                animation: marqueeScroll 24s linear infinite;
                 padding-left: 100%;
             }
+
             .marquee a {
-                color: #fff;
-                font-weight: bold;
+                color: #fde68a;
+                font-weight: 600;
                 text-decoration: none;
-                padding: 0 30px;
-                font-size: 16px;
+                padding: 3px 22px;
+                font-size: 12.5px;
                 display: inline-block;
-                background: rgba(168, 85, 247, 0.3);
-                border-radius: 30px;
-                margin: 0 5px;
-                transition: all 0.2s;
+                background: linear-gradient(
+                    90deg,
+                    rgba(180, 83, 9, 0.28),
+                    rgba(159, 18, 57, 0.2)
+                );
+                border: 1px solid rgba(217, 119, 6, 0.28);
+                border-radius: 20px;
+                margin: 0 10px;
+                transition: all 0.22s ease;
+                letter-spacing: 0.01em;
             }
+
             .marquee a:hover {
-                background: rgba(168, 85, 247, 0.6);
-                text-decoration: underline;
+                background: linear-gradient(
+                    90deg,
+                    rgba(180, 83, 9, 0.58),
+                    rgba(159, 18, 57, 0.45)
+                );
+                border-color: rgba(251, 191, 36, 0.5);
+                box-shadow: 0 0 16px rgba(217, 119, 6, 0.35);
             }
-            @keyframes marquee {
+
+            @keyframes marqueeScroll {
                 0% {
                     transform: translateX(0);
                 }
@@ -99,46 +226,171 @@
                 }
             }
 
-            .glass-modern {
-                background: rgba(15, 12, 41, 0.6);
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            /* ── Glass surfaces ── */
+            .glass-dark {
+                background: rgba(255, 220, 150, 0.025);
+                backdrop-filter: blur(28px);
+                -webkit-backdrop-filter: blur(28px);
+                border: 1px solid rgba(255, 200, 100, 0.07);
+                box-shadow:
+                    0 10px 50px rgba(0, 0, 0, 0.45),
+                    inset 0 1px 0 rgba(255, 200, 100, 0.04);
             }
 
             .glass-card {
-                background: rgba(255, 255, 255, 0.05);
-                backdrop-filter: blur(12px);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                background: rgba(255, 200, 100, 0.03);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 200, 100, 0.07);
+                transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 4px 28px rgba(0, 0, 0, 0.3);
             }
 
             .glass-card:hover {
-                border-color: rgba(168, 85, 247, 0.3);
-                box-shadow: 0 8px 32px rgba(168, 85, 247, 0.1);
+                border-color: rgba(217, 119, 6, 0.3);
+                box-shadow:
+                    0 8px 48px rgba(217, 119, 6, 0.14),
+                    0 2px 12px rgba(0, 0, 0, 0.3);
             }
 
-            @keyframes float {
-                0%,
-                100% {
-                    transform: translateY(0px);
+            /* ── Now-playing animated border ── */
+            .now-playing-card {
+                position: relative;
+            }
+
+            .now-playing-card::before {
+                content: "";
+                position: absolute;
+                inset: -1px;
+                border-radius: inherit;
+                padding: 1px;
+                background: linear-gradient(
+                    135deg,
+                    rgba(217, 119, 6, 0.7),
+                    rgba(249, 115, 22, 0.6),
+                    rgba(251, 146, 60, 0.65),
+                    rgba(217, 119, 6, 0.7)
+                );
+                background-size: 300% 300%;
+                animation: borderFlow 4s linear infinite;
+                -webkit-mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+            }
+
+            @keyframes borderFlow {
+                0% {
+                    background-position: 0% 50%;
                 }
                 50% {
-                    transform: translateY(-10px);
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
                 }
             }
 
-            @keyframes pulse-glow {
+            /* ── Vinyl / album art ── */
+            .vinyl-wrap {
+                position: relative;
+                width: 160px;
+                height: 160px;
+                flex-shrink: 0;
+            }
+
+            @media (min-width: 768px) {
+                .vinyl-wrap {
+                    width: 180px;
+                    height: 180px;
+                }
+            }
+
+            .vinyl-glow {
+                position: absolute;
+                inset: -20px;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(217, 119, 6, 0.4) 0%,
+                    transparent 70%
+                );
+                animation: vinylGlow 2.5s ease-in-out infinite;
+            }
+
+            @keyframes vinylGlow {
                 0%,
                 100% {
-                    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+                    opacity: 0.55;
+                    transform: scale(1);
                 }
                 50% {
-                    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+                    opacity: 1;
+                    transform: scale(1.07);
                 }
             }
 
-            @keyframes spin {
+            .vinyl-img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                animation: vinylSpin 18s linear infinite;
+                box-shadow:
+                    0 0 0 4px rgba(255, 200, 80, 0.08),
+                    0 0 0 10px rgba(0, 0, 0, 0.38),
+                    0 20px 60px rgba(0, 0, 0, 0.65);
+            }
+
+            .vinyl-grooves {
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: repeating-radial-gradient(
+                    circle at center,
+                    transparent 0%,
+                    transparent 10%,
+                    rgba(0, 0, 0, 0.09) 10.5%,
+                    transparent 11%
+                );
+                animation: vinylSpin 18s linear infinite;
+                pointer-events: none;
+            }
+
+            .vinyl-center {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+            }
+
+            .vinyl-hub {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                background: radial-gradient(circle, #1a0f04 40%, #2e1a08 100%);
+                border: 2px solid rgba(255, 200, 80, 0.12);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            }
+
+            .vinyl-hub-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255, 200, 80, 0.22);
+            }
+
+            @keyframes vinylSpin {
                 from {
                     transform: rotate(0deg);
                 }
@@ -147,321 +399,769 @@
                 }
             }
 
-            .rotate-slow {
-                animation: spin 20s linear infinite;
+            /* ── Equalizer bars ── */
+            .eq-wrap {
+                display: inline-flex;
+                align-items: flex-end;
+                gap: 2.5px;
+                height: 18px;
             }
 
-            .float-animation {
-                animation: float 3s ease-in-out infinite;
+            .eq-bar {
+                width: 3px;
+                border-radius: 2px;
+                background: linear-gradient(to top, #f59e0b, #fb923c);
+                transform-origin: bottom;
             }
 
-            .pulse-glow {
-                animation: pulse-glow 2s ease-in-out infinite;
+            .eq-bar:nth-child(1) {
+                animation: eqBounce 0.65s ease-in-out infinite;
+            }
+            .eq-bar:nth-child(2) {
+                animation: eqBounce 0.5s ease-in-out infinite 0.12s;
+            }
+            .eq-bar:nth-child(3) {
+                animation: eqBounce 0.75s ease-in-out infinite 0.08s;
+            }
+            .eq-bar:nth-child(4) {
+                animation: eqBounce 0.55s ease-in-out infinite 0.2s;
             }
 
-            .song-list::-webkit-scrollbar {
-                width: 4px;
+            @keyframes eqBounce {
+                0%,
+                100% {
+                    height: 4px;
+                    opacity: 0.7;
+                }
+                50% {
+                    height: 18px;
+                    opacity: 1;
+                }
             }
 
-            .song-list::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 10px;
+            /* ── Animated gradient title ── */
+            .main-title {
+                font-size: 3.8rem;
+                letter-spacing: -0.03em;
+                line-height: 1.1;
+                background: linear-gradient(
+                    135deg,
+                    #fbbf24 0%,
+                    #fb923c 30%,
+                    #f87171 60%,
+                    #fbbf24 100%
+                );
+                background-size: 200% auto;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: titleShift 5s linear infinite;
             }
 
-            .song-list::-webkit-scrollbar-thumb {
-                background: rgba(168, 85, 247, 0.5);
-                border-radius: 10px;
+            @keyframes titleShift {
+                0% {
+                    background-position: 0% center;
+                }
+                100% {
+                    background-position: 200% center;
+                }
             }
 
-            .song-list::-webkit-scrollbar-thumb:hover {
-                background: rgba(168, 85, 247, 0.8);
+            @media (max-width: 768px) {
+                .main-title {
+                    font-size: 2.6rem;
+                }
             }
 
-            .loader {
-                width: 40px;
-                height: 40px;
-                border: 3px solid rgba(168, 85, 247, 0.3);
-                border-top-color: #a855f7;
-                border-radius: 50%;
-                animation: spin 0.8s linear infinite;
+            /* ── Neon pill badges ── */
+            .neon-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 4px 14px;
+                border-radius: 999px;
+                font-size: 11.5px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                background: linear-gradient(
+                    90deg,
+                    rgba(180, 83, 9, 0.25),
+                    rgba(159, 18, 57, 0.18)
+                );
+                border: 1px solid rgba(217, 119, 6, 0.32);
+                color: #fde68a;
+                box-shadow: 0 0 12px rgba(217, 119, 6, 0.18);
             }
 
-            audio::-webkit-media-controls-panel {
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(10px);
+            /* ── Quality buttons ── */
+            .quality-btn {
+                font-size: 0.88rem;
+                padding: 7px 20px;
+                border-radius: 999px;
+                font-weight: 600;
+                transition: all 0.25s ease;
+                letter-spacing: 0.01em;
+                cursor: pointer;
             }
 
-            audio::-webkit-media-controls-play-button {
-                background-color: #a855f7;
-                border-radius: 50%;
+            .quality-btn-inactive {
+                background: rgba(255, 200, 80, 0.06);
+                color: rgba(255, 255, 255, 0.55);
+                border: 1px solid rgba(255, 200, 80, 0.1);
             }
 
-            .search-input:focus {
-                box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-                transform: scale(1.01);
+            .quality-btn-inactive:hover {
+                background: rgba(255, 200, 80, 0.13);
+                color: rgba(255, 255, 255, 0.88);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 14px rgba(217, 119, 6, 0.22);
             }
 
             .quality-btn-active {
-                background: linear-gradient(135deg, #a855f7, #ec489a);
-                box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+                background: linear-gradient(135deg, #b45309, #ea580c);
+                color: #fff;
+                border: 1px solid transparent;
+                box-shadow:
+                    0 4px 20px rgba(180, 83, 9, 0.55),
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
             }
 
-            .song-item {
-                transition: all 0.2s ease;
+            /* ── Search input ── */
+            .search-input {
+                font-size: 1rem;
+                background: rgba(255, 200, 80, 0.05);
+                border: 1px solid rgba(255, 200, 80, 0.1);
+                color: #fff;
+                transition: all 0.25s ease;
+                outline: none;
             }
 
-            .song-item:hover {
+            .search-input::placeholder {
+                color: rgba(255, 255, 255, 0.3);
+            }
+
+            .search-input:focus {
+                border-color: rgba(217, 119, 6, 0.65);
+                background: rgba(217, 119, 6, 0.07);
+                box-shadow:
+                    0 0 0 3px rgba(217, 119, 6, 0.18),
+                    0 0 24px rgba(217, 119, 6, 0.08);
+                transform: scale(1.004);
+            }
+
+            /* ── Search button ── */
+            .search-btn {
+                position: relative;
+                overflow: hidden;
+                background: linear-gradient(135deg, #b45309 0%, #ea580c 100%);
+                color: #fff;
+                font-weight: 700;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .search-btn::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 60%;
+                height: 100%;
                 background: linear-gradient(
                     90deg,
-                    rgba(168, 85, 247, 0.2),
-                    rgba(236, 72, 153, 0.1)
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
                 );
-                transform: translateX(4px);
+                transition: left 0.55s ease;
+            }
+
+            .search-btn:hover::before {
+                left: 160%;
+            }
+
+            .search-btn:hover {
+                background: linear-gradient(135deg, #92400e 0%, #c2410c 100%);
+                box-shadow: 0 6px 28px rgba(180, 83, 9, 0.6);
+                transform: translateY(-1px);
+            }
+
+            .search-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            /* ── Quick tags ── */
+            .quick-tag {
+                font-size: 0.82rem;
+                font-weight: 500;
+                padding: 5px 14px;
+                border-radius: 999px;
+                background: rgba(255, 200, 80, 0.05);
+                border: 1px solid rgba(255, 200, 80, 0.09);
+                color: rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+                transition: all 0.22s ease;
+                letter-spacing: 0.01em;
+                user-select: none;
+            }
+
+            .quick-tag:hover {
+                background: rgba(217, 119, 6, 0.24);
+                border-color: rgba(217, 119, 6, 0.44);
+                color: #fef3c7;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 16px rgba(217, 119, 6, 0.28);
+            }
+
+            /* ── Song list scrollbar ── */
+            .song-list::-webkit-scrollbar {
+                width: 3px;
+            }
+            .song-list::-webkit-scrollbar-track {
+                background: rgba(255, 200, 80, 0.03);
+                border-radius: 10px;
+            }
+            .song-list::-webkit-scrollbar-thumb {
+                background: rgba(217, 119, 6, 0.42);
+                border-radius: 10px;
+            }
+            .song-list::-webkit-scrollbar-thumb:hover {
+                background: rgba(217, 119, 6, 0.72);
+            }
+
+            /* ── Song item ── */
+            .song-item {
+                position: relative;
+                transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow: hidden;
+            }
+
+            .song-item::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    rgba(217, 119, 6, 0.2),
+                    rgba(249, 115, 22, 0.07),
+                    transparent
+                );
+                transition: width 0.3s ease;
+                pointer-events: none;
+            }
+
+            .song-item:hover::after {
+                width: 100%;
+            }
+            .song-item:hover {
+                transform: translateX(5px);
             }
 
             .song-playing {
                 background: linear-gradient(
                     90deg,
-                    rgba(168, 85, 247, 0.3),
-                    rgba(236, 72, 153, 0.15)
+                    rgba(217, 119, 6, 0.22),
+                    rgba(249, 115, 22, 0.09),
+                    transparent
                 );
-                border-left: 3px solid #a855f7;
+                border-left: 3px solid #f59e0b;
             }
 
+            .song-playing .song-name-text {
+                color: #fbbf24;
+            }
+
+            /* ── Loader spinner ── */
+            .loader {
+                border: 3px solid rgba(217, 119, 6, 0.2);
+                border-top-color: #f59e0b;
+                border-radius: 50%;
+                animation: spin 0.75s linear infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* ── Toast fade ── */
             .fade-enter-active,
             .fade-leave-active {
                 transition:
-                    opacity 0.3s,
-                    transform 0.3s;
+                    opacity 0.35s ease,
+                    transform 0.35s ease;
             }
             .fade-enter-from,
             .fade-leave-to {
                 opacity: 0;
-                transform: translate(-50%, 20px);
+                transform: translate(-50%, 16px) scale(0.95);
             }
 
+            /* ── Audio player ──
+               Fix: give the audio element itself a dark background via
+               color-scheme + accent-color, then target both the enclosure
+               and panel pseudo-elements so no bright white strip appears.
+            ── */
+            audio {
+                color-scheme: dark;
+                accent-color: #f59e0b;
+                background: transparent;
+            }
+
+            audio::-webkit-media-controls {
+                background: transparent;
+            }
+
+            audio::-webkit-media-controls-enclosure {
+                background: rgba(20, 10, 2, 0.88);
+                border-radius: 10px;
+                overflow: hidden;
+                border: 1px solid rgba(217, 119, 6, 0.18);
+            }
+
+            audio::-webkit-media-controls-panel {
+                background: rgba(20, 10, 2, 0.88);
+            }
+
+            audio::-webkit-media-controls-play-button {
+                background-color: #f59e0b;
+                border-radius: 50%;
+                filter: none;
+            }
+
+            audio::-webkit-media-controls-timeline {
+                accent-color: #f59e0b;
+            }
+
+            audio::-webkit-media-controls-volume-slider {
+                accent-color: #f59e0b;
+            }
+
+            audio::-webkit-media-controls-current-time-display,
+            audio::-webkit-media-controls-time-remaining-display {
+                color: rgba(253, 230, 138, 0.8);
+            }
+
+            /* ── Layout ── */
             .main-content {
-                padding-top: 85px;
+                padding-top: 80px;
             }
-
             .title-section {
-                margin-top: 20px;
-                margin-bottom: 40px;
-            }
-
-            .main-title {
-                font-size: 4rem;
-                letter-spacing: -0.02em;
+                margin-top: 24px;
+                margin-bottom: 44px;
             }
 
             @media (max-width: 768px) {
-                .main-title {
-                    font-size: 2.8rem;
-                }
                 .main-content {
-                    padding-top: 90px;
+                    padding-top: 86px;
                 }
                 .title-section {
-                    margin-top: 15px;
+                    margin-top: 16px;
                     margin-bottom: 30px;
                 }
             }
 
-            .search-input {
-                font-size: 1.1rem;
+            /* ── Footer gradient text ── */
+            .footer-text {
+                background: linear-gradient(
+                    90deg,
+                    rgba(251, 191, 36, 0.75),
+                    rgba(251, 146, 60, 0.75)
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
 
-            .song-name {
-                font-size: 1.1rem;
+            /* ── Section header ── */
+            .section-header {
+                background: linear-gradient(
+                    90deg,
+                    rgba(255, 200, 80, 0.03),
+                    transparent
+                );
+                border-bottom: 1px solid rgba(255, 200, 80, 0.06);
             }
 
-            .artist-name {
-                font-size: 0.9rem;
-            }
-
-            .quick-tag {
-                font-size: 0.9rem;
-                padding: 0.5rem 1rem;
-            }
-
-            .quality-btn {
-                font-size: 1rem;
-                padding: 0.5rem 1.25rem;
-            }
-
-            .result-count {
-                font-size: 0.9rem;
-            }
-
-            .now-playing-title {
-                font-size: 2rem;
-            }
-
-            @media (max-width: 768px) {
-                .now-playing-title {
-                    font-size: 1.5rem;
+            /* ── Pulse dot ── */
+            @keyframes pulseDot {
+                0%,
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
                 }
+                50% {
+                    opacity: 0.6;
+                    transform: scale(0.85);
+                }
+            }
+            .pulse-dot {
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #4ade80;
+                animation: pulseDot 1.5s ease-in-out infinite;
+                flex-shrink: 0;
+            }
+
+            /* ── Lyrics panel ── */
+            .lyrics-panel {
+                max-height: 320px;
+                overflow-y: auto;
+                background: rgba(20, 10, 2, 0.4);
+                border-radius: 12px;
+                padding: 16px;
+                margin-top: 16px;
+                border: 1px solid rgba(217, 119, 6, 0.15);
+            }
+
+            .lyrics-panel::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .lyrics-panel::-webkit-scrollbar-track {
+                background: rgba(217, 119, 6, 0.06);
+                border-radius: 10px;
+            }
+
+            .lyrics-panel::-webkit-scrollbar-thumb {
+                background: rgba(217, 119, 6, 0.35);
+                border-radius: 10px;
+            }
+
+            .lyrics-panel::-webkit-scrollbar-thumb:hover {
+                background: rgba(217, 119, 6, 0.55);
+            }
+
+            .lyric-line {
+                padding: 8px 0;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.35);
+                transition: all 0.25s ease;
+                cursor: default;
+                text-align: center;
+            }
+
+            .lyric-line.active {
+                color: #fbbf24;
+                font-weight: 600;
+                font-size: 1.05rem;
+                text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+            }
+
+            .lyric-line:hover {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .lyrics-empty {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.2);
+                padding: 32px 16px;
+                font-size: 0.9rem;
+            }
+
+            .lyrics-loading {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.3);
+                padding: 24px 16px;
+                font-size: 0.9rem;
+            }
+
+            .lyrics-toggle-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: rgba(217, 119, 6, 0.15);
+                border: 1px solid rgba(217, 119, 6, 0.25);
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: all 0.22s ease;
+                margin-left: 8px;
+            }
+
+            .lyrics-toggle-btn:hover {
+                background: rgba(217, 119, 6, 0.25);
+                border-color: rgba(217, 119, 6, 0.45);
+                color: #fef3c7;
             }
         </style>
     </head>
+
     <body>
+        <!-- ── Animated Background ── -->
+        <div class="bg-scene">
+            <div class="bg-grid"></div>
+            <div class="bg-orb bg-orb-1"></div>
+            <div class="bg-orb bg-orb-2"></div>
+            <div class="bg-orb bg-orb-3"></div>
+            <div class="bg-orb bg-orb-4"></div>
+        </div>
+
+        <!-- ── Top Announcement Banner ── -->
         <div class="marquee-container">
             <div class="marquee">
                 <a
-                    href="https://kelayun.notepin.co"
+                    href="https://bbbboo.klyfunny.org/#/register?code=J8IXVhen"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    🔥 最低月付2元1000G机场推荐 / 解锁奈飞.TikTok.Gemini /
-                    不限速不限设备不限地区
-                </a>
-                <a
-                    href="https://kelayun.notepin.co"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    🔥 最低月付2元1000G机场推荐 / 解锁奈飞.TikTok.Gemini /
+                    🔥 最低月付2元1000G机场推荐 / 解锁奈飞 · TikTok · Gemini /
                     不限速不限设备不限地区
                 </a>
             </div>
         </div>
 
+        <!-- ── App Root ── -->
         <div
             id="app"
-            class="relative z-10 max-w-6xl mx-auto px-4 py-6 md:py-8 main-content"
+            class="relative z-10 max-w-5xl mx-auto px-4 py-6 md:py-8 main-content"
         >
+            <!-- ── Hero Title ── -->
             <div class="text-center title-section">
-                <div class="inline-block mb-4">
-                    <div class="relative">
-                        <div
-                            class="absolute inset-0 blur-2xl bg-purple-600/30 rounded-full"
-                        ></div>
-                        <h1
-                            class="relative main-title font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 bg-clip-text text-transparent"
+                <div class="relative inline-block mb-5">
+                    <!-- Warm glow blob behind title -->
+                    <div
+                        class="absolute inset-0 blur-3xl rounded-full scale-150"
+                        style="
+                            background: radial-gradient(
+                                ellipse,
+                                rgba(180, 83, 9, 0.28) 0%,
+                                transparent 70%
+                            );
+                        "
+                    ></div>
+                    <div
+                        class="relative flex items-center justify-center gap-3 mb-1"
+                    >
+                        <span style="font-size: 2.6rem; line-height: 1"
+                            >🎵</span
                         >
-                            禾沐音乐网
-                        </h1>
+                        <h1 class="main-title font-bold">禾沐音乐网</h1>
+                        <span style="font-size: 2.6rem; line-height: 1"
+                            >🎵</span
+                        >
                     </div>
                 </div>
-                <p class="text-white/60 text-base">
-                    基于QQ音乐 · 高清无损 · 沉浸聆听
-                </p>
+                <div class="flex items-center justify-center gap-2.5 flex-wrap">
+                    <span class="neon-pill">
+                        <span class="pulse-dot"></span>
+                        QQ音乐驱动
+                    </span>
+                    <span class="neon-pill" style="color: #fed7aa"
+                        >✨ 高清无损</span
+                    >
+                    <span class="neon-pill" style="color: #fef3c7"
+                        >🎧 沉浸聆听</span
+                    >
+                </div>
             </div>
 
-            <div class="glass-modern rounded-2xl p-6 md:p-7 mb-6">
+            <!-- ── Search & Controls Card ── -->
+            <div class="glass-dark rounded-2xl p-6 md:p-7 mb-5">
+                <!-- Quality row -->
                 <div
                     class="flex justify-between items-center mb-6 flex-wrap gap-3"
                 >
                     <div
-                        class="text-white/80 text-base flex items-center gap-2"
+                        class="flex items-center gap-2 text-white/60 text-sm font-medium"
                     >
-                        <span
-                            class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
-                        ></span>
+                        <span class="pulse-dot"></span>
                         音质选择
                     </div>
-                    <div class="flex gap-3">
+                    <div class="flex gap-2">
                         <button
                             v-for="q in qualities"
                             :key="q.value"
                             @click="currentQuality = q.value; if(currentSong) refreshPlay()"
-                            class="quality-btn px-5 py-2 rounded-full font-semibold transition-all duration-300"
-                            :class="currentQuality === q.value ?
-                            'quality-btn-active text-white shadow-lg' :
-                            'bg-white/10 text-white/70 hover:bg-white/20'"
+                            class="quality-btn"
+                            :class="currentQuality === q.value
+                                ? 'quality-btn-active'
+                                : 'quality-btn-inactive'"
                         >
                             {{ q.label }}
                         </button>
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-4 mb-5">
+                <!-- Search row -->
+                <div class="flex flex-col md:flex-row gap-3 mb-5">
                     <div class="flex-1 relative">
-                        <div
-                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 text-lg"
+                        <span
+                            class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 text-lg pointer-events-none select-none"
+                            >🔍</span
                         >
-                            🔍
-                        </div>
                         <input
                             v-model="keyword"
                             @keyup.enter="searchMusic"
                             type="text"
-                            placeholder="输入歌名、歌手，如「晴天」「周杰伦」「稻香」..."
-                            class="search-input w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none transition-all focus:border-purple-500 text-base"
+                            placeholder="搜索歌名、歌手，如「晴天」「周杰伦」「稻香」..."
+                            class="search-input w-full pl-12 pr-4 py-3.5 rounded-xl"
                         />
                     </div>
                     <button
                         @click="searchMusic"
                         :disabled="loading"
-                        class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3.5 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[130px] shadow-lg hover:shadow-purple-500/25 text-base"
+                        class="search-btn px-8 py-3.5 rounded-xl flex items-center justify-center gap-2 min-w-[130px] text-[0.95rem] font-semibold shadow-lg"
                     >
-                        <span
-                            v-if="loading"
-                            class="loader w-5 h-5 border-2"
-                        ></span>
-                        <span>{{ loading ? '搜索中' : '🎵 搜索音乐' }}</span>
+                        <span v-if="loading" class="loader w-5 h-5"></span>
+                        <span>{{ loading ? '搜索中…' : '🎵 搜索音乐' }}</span>
                     </button>
                 </div>
 
-                <div class="flex flex-wrap gap-2.5">
+                <!-- Quick tags -->
+                <div class="flex flex-wrap gap-2">
                     <span
                         v-for="tag in quickTags"
                         :key="tag"
                         @click="keyword = tag; searchMusic()"
-                        class="quick-tag px-4 py-2 rounded-full bg-white/10 text-white/80 hover:bg-purple-500/40 hover:text-white cursor-pointer transition-all duration-200 backdrop-blur-sm font-medium"
+                        class="quick-tag"
                     >
                         🎧 {{ tag }}
                     </span>
                 </div>
             </div>
 
+            <!-- ── Now Playing Card ── -->
             <div
                 v-if="currentSong"
-                class="glass-card rounded-2xl p-6 md:p-7 mb-6 transition-all duration-500"
+                class="now-playing-card glass-card rounded-2xl p-6 md:p-8 mb-5 transition-all duration-500"
             >
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="relative">
+                <div
+                    class="flex flex-col md:flex-row items-center gap-7 md:gap-10"
+                >
+                    <!-- Vinyl record -->
+                    <div class="vinyl-wrap">
+                        <div class="vinyl-glow"></div>
                         <img
                             :src="currentSong.cover"
-                            class="w-36 h-36 md:w-40 md:h-40 rounded-2xl shadow-2xl object-cover rotate-slow"
+                            class="vinyl-img"
                             @error="currentSong.cover = defaultCover"
+                            alt="album cover"
                         />
-                        <div
-                            class="absolute -bottom-2 -right-2 w-9 h-9 bg-purple-600 rounded-full flex items-center justify-center shadow-lg"
-                        >
-                            <span class="text-white text-sm">🎵</span>
+                        <div class="vinyl-grooves"></div>
+                        <div class="vinyl-center">
+                            <div class="vinyl-hub">
+                                <div class="vinyl-hub-dot"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <div class="mb-2">
-                            <span
-                                class="inline-block px-3 py-1 rounded-full text-sm bg-purple-500/40 text-purple-200 mb-2 font-medium"
-                                >正在播放</span
-                            >
-                            <h2
-                                class="now-playing-title font-bold text-white mb-1 leading-tight"
-                            >
-                                {{ currentSong.name }}
-                            </h2>
-                            <p class="text-white/70 text-base">
-                                {{ currentSong.artist }}
-                            </p>
+
+                    <!-- Info -->
+                    <div class="flex-1 text-center md:text-left min-w-0">
+                        <!-- Badge with EQ -->
+                        <div
+                            class="flex items-center justify-center md:justify-start gap-2 mb-3"
+                        >
+                            <span class="neon-pill">
+                                <span class="eq-wrap">
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                </span>
+                                正在播放
+                            </span>
                         </div>
-                        <audio
-                            :src="currentPlayUrl"
-                            controls
-                            autoplay
-                            class="w-full mt-4 rounded-lg"
-                            @error="onPlayError"
-                        ></audio>
+
+                        <!-- Title -->
+                        <h2
+                            class="font-bold text-white leading-tight mb-1.5 truncate"
+                            style="font-size: clamp(1.4rem, 4vw, 2rem)"
+                        >
+                            {{ currentSong.name }}
+                        </h2>
+                        <p class="text-white/55 text-[0.95rem] mb-0.5 truncate">
+                            {{ currentSong.artist }}
+                        </p>
+                        <p
+                            v-if="currentSong.album"
+                            class="text-white/35 text-sm mb-5 truncate"
+                        >
+                            {{ currentSong.album }}
+                        </p>
+
+                        <!-- Audio player -->
+                        <div
+                            class="w-full mt-3 rounded-xl overflow-hidden"
+                            style="
+                                background: rgba(20, 10, 2, 0.88);
+                                border: 1px solid rgba(217, 119, 6, 0.18);
+                            "
+                        >
+                            <audio
+                                ref="audioElement"
+                                :src="currentPlayUrl"
+                                controls
+                                autoplay
+                                class="w-full"
+                                style="display: block; height: 42px"
+                                @error="onPlayError"
+                                @timeupdate="updateLyricsTime"
+                            ></audio>
+                        </div>
+
+                        <!-- Lyrics toggle button -->
+                        <button
+                            v-if="currentSong"
+                            @click="showLyrics = !showLyrics"
+                            class="lyrics-toggle-btn mt-3"
+                        >
+                            <span>{{ showLyrics ? '📖' : '📝' }}</span>
+                            <span
+                                >{{ showLyrics ? '隐藏歌词' : '显示歌词'
+                                }}</span
+                            >
+                            <span
+                                v-if="lyrics.length > 0 && !lyricsLoading"
+                                style="color: #4ade80"
+                                >●</span
+                            >
+                        </button>
+
+                        <!-- Lyrics panel -->
+                        <div v-show="showLyrics" class="lyrics-panel">
+                            <div v-if="lyricsLoading" class="lyrics-loading">
+                                加载歌词中…
+                            </div>
+                            <div
+                                v-else-if="lyrics.length === 0"
+                                class="lyrics-empty"
+                            >
+                                🎵 暂无歌词
+                            </div>
+                            <div v-else>
+                                <div
+                                    v-for="(line, idx) in lyrics"
+                                    :key="idx"
+                                    class="lyric-line"
+                                    :class="{ active: idx === currentLyricIndex }"
+                                >
+                                    {{ line.text }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Error state -->
                         <div
                             v-if="playError"
-                            class="text-amber-300 text-sm mt-2 flex items-center justify-center md:justify-start gap-2"
+                            class="text-amber-300/90 text-sm mt-3 flex items-center justify-center md:justify-start gap-2"
                         >
                             <span>⚠️ {{ playError }}</span>
                             <button
                                 @click="refreshPlay"
-                                class="text-purple-300 underline text-sm"
+                                class="text-amber-300 underline hover:text-amber-200 transition"
                             >
                                 重试
                             </button>
@@ -470,112 +1170,150 @@
                 </div>
             </div>
 
-            <div class="glass-modern rounded-2xl overflow-hidden">
+            <!-- ── Results Panel ── -->
+            <div class="glass-dark rounded-2xl overflow-hidden">
+                <!-- Header -->
                 <div
-                    class="px-6 py-5 border-b border-white/10 flex justify-between items-center"
+                    class="section-header px-6 py-4 flex justify-between items-center"
                 >
-                    <div class="flex items-center gap-2">
-                        <span class="text-2xl">🎧</span>
-                        <span class="text-white font-semibold text-lg"
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🎧</span>
+                        <span class="text-white font-semibold text-[0.95rem]"
                             >搜索结果</span
                         >
                         <span
                             v-if="songs.length"
-                            class="result-count px-2.5 py-0.5 rounded-full text-sm bg-purple-500/30 text-purple-200 font-medium"
-                            >{{ songs.length }}首</span
+                            class="neon-pill"
+                            style="font-size: 11px; padding: 2px 10px"
+                            >{{ songs.length }} 首</span
                         >
                     </div>
-                    <div v-if="songs.length" class="text-white/50 text-sm">
-                        点击歌曲即可播放
+                    <div v-if="songs.length" class="text-white/35 text-xs">
+                        点击歌曲播放
                     </div>
                 </div>
 
-                <div v-if="loading && !songs.length" class="p-16 text-center">
-                    <div class="loader mx-auto mb-4"></div>
-                    <p class="text-white/60 text-base">正在寻找音乐...</p>
+                <!-- Loading -->
+                <div v-if="loading && !songs.length" class="py-20 text-center">
+                    <div class="loader w-10 h-10 mx-auto mb-4"></div>
+                    <p class="text-white/45 text-sm">正在寻找音乐…</p>
                 </div>
 
+                <!-- Empty -->
                 <div
                     v-else-if="!songs.length && !loading"
-                    class="p-16 text-center"
+                    class="py-20 text-center"
                 >
-                    <div class="text-7xl mb-4 opacity-50">🎼</div>
-                    <p class="text-white/60 text-lg">
+                    <div class="text-6xl mb-5 opacity-30">🎼</div>
+                    <p class="text-white/50 text-base font-medium mb-1.5">
                         输入关键词，开始音乐之旅
                     </p>
-                    <p class="text-white/40 text-base mt-2">
-                        试试「晴天」「稻香」「夜曲」
+                    <p class="text-white/30 text-sm">
+                        试试「晴天」「稻香」「孤勇者」
                     </p>
                 </div>
 
+                <!-- List -->
                 <div
                     v-else
-                    class="divide-y divide-white/10 max-h-[550px] overflow-y-auto song-list"
+                    class="divide-y divide-white/[0.04] max-h-[560px] overflow-y-auto song-list"
                 >
                     <div
                         v-for="(song, idx) in songs"
                         :key="song.id"
                         @click="playSong(song)"
-                        class="song-item p-4 flex items-center gap-4 cursor-pointer transition-all"
+                        class="song-item px-5 py-3 flex items-center gap-4 cursor-pointer"
+                        :class="currentSong && currentSong.id === song.id ? 'song-playing' : ''"
                     >
+                        <!-- Index / EQ indicator -->
                         <div
-                            class="text-white/50 w-10 text-center font-mono text-base font-medium"
+                            class="w-8 flex items-center justify-center flex-shrink-0"
                         >
-                            {{ String(idx+1).padStart(2, '0') }}
+                            <template
+                                v-if="currentSong && currentSong.id === song.id"
+                            >
+                                <div class="eq-wrap">
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                    <span class="eq-bar"></span>
+                                </div>
+                            </template>
+                            <span
+                                v-else
+                                class="text-white/25 font-mono text-xs"
+                            >
+                                {{ String(idx + 1).padStart(2, '0') }}
+                            </span>
                         </div>
-                        <div class="relative">
+
+                        <!-- Cover thumbnail -->
+                        <div class="relative flex-shrink-0">
                             <img
                                 :src="song.cover"
-                                class="w-14 h-14 rounded-lg object-cover shadow-md"
+                                class="w-12 h-12 rounded-xl object-cover shadow-lg"
+                                style="
+                                    border: 1px solid rgba(255, 200, 80, 0.07);
+                                "
                                 @error="song.cover = defaultCover"
+                                alt=""
                             />
                             <div
                                 v-if="currentSong && currentSong.id === song.id"
-                                class="absolute inset-0 bg-purple-600/60 rounded-lg flex items-center justify-center"
+                                class="absolute inset-0 rounded-xl flex items-center justify-center"
+                                style="background: rgba(180, 83, 9, 0.6)"
                             >
-                                <span class="text-white text-sm font-bold"
+                                <span class="text-white text-xs font-bold"
                                     >▶</span
                                 >
                             </div>
                         </div>
+
+                        <!-- Song info -->
                         <div class="flex-1 min-w-0">
                             <div
-                                class="song-name text-white font-semibold truncate"
+                                class="song-name-text text-white font-semibold truncate text-[0.95rem] leading-tight"
                             >
                                 {{ song.name }}
                             </div>
-                            <div
-                                class="artist-name text-white/50 text-sm truncate mt-0.5"
-                            >
+                            <div class="text-white/40 text-sm truncate mt-0.5">
                                 {{ song.artist }}
                             </div>
                         </div>
-                        <div class="text-white/40 text-sm hidden sm:block">
+
+                        <!-- Duration -->
+                        <div
+                            class="text-white/30 text-xs hidden sm:block flex-shrink-0 font-mono tabular-nums"
+                        >
                             {{ song.duration }}
                         </div>
-                        <div
-                            class="text-white/40 text-base opacity-0 group-hover:opacity-100 transition"
-                        >
-                            ▶
-                        </div>
+
+                        <!-- Play hint -->
+                        <div class="text-white/20 text-sm flex-shrink-0">▶</div>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center mt-6 text-white/30 text-sm">
-                🎵 裤佬音乐网 · 用心聆听每一刻 🎵
+            <!-- ── Footer ── -->
+            <div class="text-center mt-8 mb-4">
+                <p class="footer-text text-sm font-medium">
+                    🎵 禾沐音乐网 · 用心聆听每一刻 🎵
+                </p>
             </div>
 
+            <!-- ── Toast ── -->
             <transition name="fade">
                 <div
                     v-if="message"
-                    class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-md text-white px-5 py-2.5 rounded-full text-sm shadow-2xl z-50 flex items-center gap-2"
+                    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/80 backdrop-blur-xl text-white text-sm font-medium px-5 py-2.5 rounded-full flex items-center gap-2 shadow-2xl"
+                    style="border: 1px solid rgba(217, 119, 6, 0.2)"
                 >
-                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    <span class="pulse-dot"></span>
                     {{ message }}
                 </div>
             </transition>
         </div>
+        <!-- /#app -->
 
         <script>
             const { createApp, ref } = Vue;
@@ -604,14 +1342,21 @@
                     const playError = ref("");
                     const message = ref("");
                     const currentQuality = ref("128k");
+                    const showLyrics = ref(false);
+                    const lyrics = ref([]);
+                    const lyricsLoading = ref(false);
+                    const currentLyricIndex = ref(-1);
+                    const audioElement = ref(null);
 
                     const defaultCover =
                         "https://y.gtimg.cn/music/photo_new/T002R300x300M000000MkMni19ClKG.jpg";
+
                     const qualities = [
                         { value: "128k", label: "标准" },
                         { value: "320k", label: "高品质" },
                         { value: "flac", label: "无损" },
                     ];
+
                     const quickTags = [
                         "晴天",
                         "稻香",
@@ -654,9 +1399,7 @@
                             const data = await proxyPost(
                                 "https://u.y.qq.com/cgi-bin/musicu.fcg",
                                 postData,
-                                {
-                                    Referer: "https://y.qq.com",
-                                },
+                                { Referer: "https://y.qq.com" },
                             );
 
                             const songList =
@@ -697,7 +1440,6 @@
 
                     const getPlayUrl = async (songmid) => {
                         if (!songmid) return null;
-
                         try {
                             const qualityMap = {
                                 "128k": "standard",
@@ -730,37 +1472,214 @@
                         return null;
                     };
 
-                    const playSong = async (song) => {
-                        if (!song) return;
-
-                        currentSong.value = song;
-                        playError.value = "";
-
-                        let url = null;
-
-                        if (song.mid) {
-                            url = await getPlayUrl(song.mid);
-                        }
-
-                        if (!url) {
-                            url = getNeteaseUrl(song.name);
-                        }
-
-                        if (!url) {
-                            url =
-                                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-                        }
-
-                        currentPlayUrl.value = url;
-                        showMsg(`🎵 正在播放: ${song.name}`);
-                    };
-
                     const refreshPlay = () => {
                         if (currentSong.value) playSong(currentSong.value);
                     };
 
                     const onPlayError = () => {
                         playError.value = "播放失败，可尝试切换音质";
+                    };
+
+                    const parseLyrics = (lyricText) => {
+                        if (!lyricText) return [];
+                        const lines = lyricText.split("\n");
+                        const parsed = [];
+
+                        for (const line of lines) {
+                            // 匹配 [分:秒.毫秒] 或 [分:秒]
+                            const timeMatch = line.match(
+                                /\[(\d+):(\d+)(?:\.(\d+))?\]/,
+                            );
+                            if (timeMatch) {
+                                const minutes = parseInt(timeMatch[1]);
+                                const seconds = parseInt(timeMatch[2]);
+                                const milliseconds = timeMatch[3]
+                                    ? parseInt(timeMatch[3])
+                                    : 0;
+                                const time =
+                                    minutes * 60 +
+                                    seconds +
+                                    milliseconds /
+                                        (timeMatch[3]?.length === 2
+                                            ? 100
+                                            : 1000);
+                                const text = line
+                                    .replace(/\[\d+:\d+(?:\.\d+)?\]/g, "")
+                                    .trim();
+                                if (text && text.length > 0) {
+                                    parsed.push({ time, text });
+                                }
+                            }
+                        }
+
+                        return parsed.sort((a, b) => a.time - b.time);
+                    };
+
+                    const fetchLyrics = async (songMid, songName) => {
+                        lyricsLoading.value = true;
+                        lyrics.value = [];
+                        currentLyricIndex.value = -1;
+
+                        console.log(
+                            "开始获取歌词，songMid:",
+                            songMid,
+                            "songName:",
+                            songName,
+                        );
+
+                        try {
+                            // 使用QQ音乐API获取歌词
+                            if (songMid) {
+                                const lyricData = await proxyPost(
+                                    "https://u.y.qq.com/cgi-bin/musicu.fcg",
+                                    {
+                                        req_1: {
+                                            method: "GetPlayLyricInfo",
+                                            module: "music.musichallSong.PlayLyricInfo",
+                                            param: {
+                                                songMID: songMid,
+                                                songID: 0,
+                                            },
+                                        },
+                                    },
+                                    { Referer: "https://y.qq.com" },
+                                );
+
+                                console.log("歌词API返回:", lyricData);
+
+                                const lyricText = lyricData?.req_1?.data?.lyric;
+                                if (lyricText) {
+                                    try {
+                                        // 正确解码中文：Base64 -> 二进制 -> UTF-8
+                                        const binaryString = atob(lyricText);
+                                        const bytes = Uint8Array.from(
+                                            binaryString,
+                                            (c) => c.charCodeAt(0),
+                                        );
+                                        const decodedLyric = new TextDecoder(
+                                            "utf-8",
+                                        ).decode(bytes);
+                                        console.log(
+                                            "解码后的歌词:",
+                                            decodedLyric.substring(0, 200),
+                                        );
+                                        lyrics.value =
+                                            parseLyrics(decodedLyric);
+
+                                        if (lyrics.value.length > 0) {
+                                            console.log(
+                                                "歌词解析成功，共",
+                                                lyrics.value.length,
+                                                "行",
+                                            );
+                                            lyricsLoading.value = false;
+                                            showLyrics.value = true; // 自动显示歌词
+                                            return;
+                                        } else {
+                                            console.log("歌词解析后为空");
+                                        }
+                                    } catch (decodeErr) {
+                                        console.error(
+                                            "歌词解码失败:",
+                                            decodeErr,
+                                        );
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            console.error("歌词获取失败:", err);
+                        }
+
+                        // 获取失败，使用占位歌词
+                        console.log("使用占位歌词");
+                        lyrics.value = generatePlaceholderLyrics(songName);
+                        lyricsLoading.value = false;
+                        showLyrics.value = true; // 自动显示占位歌词
+                    };
+
+                    const generatePlaceholderLyrics = (songName) => {
+                        return [
+                            { time: 0, text: `♫ ${songName}` },
+                            { time: 32, text: "🎵 正在为您播放…" },
+                            {
+                                time: 4,
+                                text: "🎧 请享受音乐",
+                            },
+                            {
+                                time: 6,
+                                text: "点击【显示歌词】可查看完整歌词",
+                            },
+                            { time: 10, text: "音乐无国界，音乐无言语" },
+                        ];
+                    };
+
+                    const updateLyricsTime = () => {
+                        if (!audioElement.value || lyrics.value.length === 0) {
+                            return;
+                        }
+
+                        const currentTime = audioElement.value.currentTime;
+                        let newIndex = -1;
+
+                        for (let i = 0; i < lyrics.value.length; i++) {
+                            if (
+                                lyrics.value[i].time <= currentTime &&
+                                (i === lyrics.value.length - 1 ||
+                                    lyrics.value[i + 1].time > currentTime)
+                            ) {
+                                newIndex = i;
+                                break;
+                            }
+                        }
+
+                        currentLyricIndex.value = newIndex;
+
+                        if (newIndex >= 0) {
+                            const lyricsPanel =
+                                document.querySelector(".lyrics-panel");
+                            const activeLine =
+                                document.querySelector(".lyric-line.active");
+                            if (lyricsPanel && activeLine && showLyrics.value) {
+                                const panelRect =
+                                    lyricsPanel.getBoundingClientRect();
+                                const lineRect =
+                                    activeLine.getBoundingClientRect();
+
+                                if (
+                                    lineRect.top < panelRect.top ||
+                                    lineRect.bottom > panelRect.bottom
+                                ) {
+                                    activeLine.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center",
+                                    });
+                                }
+                            }
+                        }
+                    };
+
+                    const playSong = async (song) => {
+                        if (!song) return;
+                        currentSong.value = song;
+                        playError.value = "";
+                        showLyrics.value = false;
+                        lyrics.value = [];
+
+                        let url = null;
+                        if (song.mid) url = await getPlayUrl(song.mid);
+                        if (!url) url = getNeteaseUrl(song.name);
+                        if (!url)
+                            url =
+                                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+
+                        currentPlayUrl.value = url;
+                        showMsg(`🎵 正在播放: ${song.name}`);
+
+                        await new Promise((resolve) => {
+                            setTimeout(resolve, 500);
+                        });
+
+                        fetchLyrics(song.mid, song.name);
                     };
 
                     return {
@@ -775,10 +1694,16 @@
                         qualities,
                         defaultCover,
                         quickTags,
+                        showLyrics,
+                        lyrics,
+                        lyricsLoading,
+                        currentLyricIndex,
+                        audioElement,
                         searchMusic,
                         playSong,
                         refreshPlay,
                         onPlayError,
+                        updateLyricsTime,
                     };
                 },
             }).mount("#app");
